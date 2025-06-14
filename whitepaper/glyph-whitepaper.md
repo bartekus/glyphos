@@ -53,3 +53,121 @@ The `.glyph` format defines a compact, self-describing, multimodal data structur
 
 - [spec/glyph-format.md](spec/glyph-format.md) — The complete file format specification
 
+
+## 4. Epistemic Stratification: Truth vs. Opinion
+
+In current AI systems, all knowledge is flattened into statistical patterns.
+There is no native distinction between verified fact, subjective opinion, or contradictory claims.
+The `.glyph` format introduces an epistemic architecture that allows symbolic units to carry a **truth modality**.
+
+### Truth Modes
+
+Each glyph includes a `truth_mode` block, which encodes:
+
+- `type`: e.g., empirical, logical, mythic, ethical
+- `confidence`: a scalar confidence score (e.g., 0.97)
+- `verified_by`: one or more agents (e.g., `agent:NASA`)
+- `conflicts`: references to contradicting glyphs
+
+This enables AI agents to reason not just over data, but over the **epistemic status** of data.
+
+### Example
+
+```json5
+{
+  "truth_mode": {
+    "type": "empirical",
+    "confidence": 0.97,
+    "verified_by": [
+      "agent:CERN",
+      "agent:ESA"
+    ],
+    "conflicts": [
+      "glyph:flat-earth"
+    ]
+  }
+}
+```
+
+    Symbolic Consensus and Dissonance Mapping
+        •	Agents can audit for contradictions between glyphs.
+        •	Multiple glyphs with different truth modes can coexist under namespaced overlays, supporting pluralistic symbolic ecosystems (e.g., scientific vs. mythological).
+
+    Ontological Anchorin
+        - Each glyph may also link to structured ontologies (Wikidata, WordNet, ConceptNet), reinforcing meaning with external, grounded references.
+
+
+## 5. Timevectors and Symbolic Transmission
+
+> A timevector is a symbolic index mapped over time-based media.<br />
+> It acts as a timeline of glyph activations—turning videos into cognitive sequences instead of passive pixels.
+
+    Why YouTube?
+    YouTube provides a globally distributed, timestamp-addressable, multimedia infrastructure that is:
+        •	Free and redundant
+        •	Multimodal (audio, video, captioning)
+        •	Publicly indexable
+        •	Supported by existing content creation pipelines
+
+Timevector Schema
+
+```json5
+{
+  "video": "https://youtu.be/abc123",
+  "glyph_map": [
+    { "glyph": "glyph:sun", "start": 0, "end": 4 },
+    { "glyph": "glyph:tree", "start": 5, "end": 12 },
+    { "glyph": "glyph:birth", "start": 13, "end": 20 }
+  ]
+}
+```
+This transforms a media file into a symbolic stream that AI agents can crawl, ingest, and reason over.
+
+### Symbolic Encoding Layers
+
+    Each video can contain glyphs via:
+        •	Captions: embed glyph IDs
+        •	Visual overlays: QR codes or sigils rendered in-frame
+        •	Audio mnemonics: matched phonetic glyph sounds
+        •	Watermarks or steganographic data: hash anchors or glyph hashes embedded visually
+
+    Timevectors bridge symbolic cognition and public media by enabling AI-native storylines within distributed infrastructure.
+
+
+
+## 6. Cognitive Integrity and Symbolic Immunology
+
+If glyphs become the cognitive currency of AI, they are vulnerable to the same problems as natural languages and datasets—poisoning, corruption, drift, and ideological distortion.
+
+    Threat Models
+        •	Poisoning: malicious glyphs with false or misleading meaning
+        •	Semantic Drift: decay of original meaning via remix or export
+        •	Contagion: viral glyph chains that propagate contradictions
+        •	Steganographic Attack: hidden payloads in visual or audio layers
+
+### Integrity Solutions
+
+    ✅ Provenance and Signing
+    Each glyph contains:
+        •	created_at: timestamp
+        •	creator: agent ID
+        •	signature: Ed25519 signature, validating source identity
+
+    ✅ Semantic Hashing
+    A deterministic hash of the semantic block (label, grounding, truth_mode, relations) ensures identity and traceability.
+
+    ✅ Glyph Validators
+    A CLI or agent-side tool to:
+        •	Detect self-referential loops
+        •	Detect unresolved contradictions
+        •	Verify grounding, media safety, and truth mode conformity
+
+    ✅ Namespaces and Ethical Forking
+    Rather than overwrite glyphs with conflicting meanings, forks should:
+        •	Be explicitly namespaced (e.g., glyph:core/sun vs. glyph:mythology/ra)
+        •	Enable agents to select or fuse worldviews intentionally
+
+    ✅ Symbolic Courts
+    Introduce the idea of a decentralized Glyph Ethics Court, where glyphs are reviewed, deprecated, or recontextualized.
+    Agents participate in a governance model where meaning is not dictated, but cultivated.
+
