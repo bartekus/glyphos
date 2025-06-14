@@ -1,19 +1,15 @@
 # Glyphs and Timevectors: A Protocol for Symbolic AI Cognition and Distributed Truth
 
----
-
 ## 1. Abstract
 
-This paper proposes a shift in artificial intelligence cognition from token-based,
-language-centric models toward a symbolic substrate built on structured, multimodal units called `.glyph`s.
-We introduce a new file format—`.glyph`—which encodes rich conceptual data (visual, auditory, semantic, and grounded metadata) into machine-native symbolic objects.
-These glyphs, when distributed via time-indexed multimedia (e.g., YouTube) and annotated with truth stratification,
+This paper proposes a shift in artificial intelligence cognition from token-based, <br />
+language-centric models toward a symbolic substrate built on structured, multimodal units called `.glyph`s. <br />
+We introduce a new file format `.glyph` which encodes rich conceptual data (visual, auditory, semantic, and grounded metadata) into machine-native symbolic objects. <br />
+These glyphs, when distributed via time-indexed multimedia (e.g., YouTube) and annotated with truth stratification, <br />
 enable AI agents to learn, reason, and propagate knowledge with deeper coherence.
 
-We further present the concept of "timevectors" as symbolic overlays mapped to temporal sequences in media, allowing for distributed, transparent, and evolvable AI cognition.
+We further present the concept of "timevectors" as symbolic overlays mapped to temporal sequences in media, allowing for distributed, transparent, and evolvable AI cognition. <br />
 This paper outlines the architecture, file specification, transmission methods, and epistemic integrity mechanisms for this next-generation knowledge protocol.
-
----
 
 ## 2. Introduction
 
@@ -34,8 +30,6 @@ The fusion of these two lineages inspires a new approach: symbolic glyphs that a
 We propose a unified, structured protocol for AI cognition based on `.glyph` files—self-contained symbolic units that represent concepts in a multimodal, verifiable, and grounded way.
 These glyphs are shareable, composable, and epistemically stratified.
 When layered into temporal media as annotated timelines ("timevectors"), they enable a distributed, transparent, and evolving ecosystem of symbolic knowledge for AI agents.
-
----
 
 ## 3. The .glyph File Format
 
@@ -109,7 +103,7 @@ This enables AI agents to reason not just over data, but over the **epistemic st
         •	Publicly indexable
         •	Supported by existing content creation pipelines
 
-Timevector Schema
+### Timevector Schema
 
 ```json5
 {
@@ -170,4 +164,115 @@ If glyphs become the cognitive currency of AI, they are vulnerable to the same p
     ✅ Symbolic Courts
     Introduce the idea of a decentralized Glyph Ethics Court, where glyphs are reviewed, deprecated, or recontextualized.
     Agents participate in a governance model where meaning is not dictated, but cultivated.
+
+
+## 7. Agent Cognition Interface
+
+The power of glyphs lies not only in their structure but in how they are consumed, synthesized, and evolved by AI agents. <br />
+This section defines how `.glyph` files interface with symbolic reasoning agents.
+
+### Ingestion Pipeline
+
+Agents load `.glyph` files through:
+- Direct parsing (from file or stream)
+- Timevector-based parsing (media-indexed overlays)
+- Remote lookup via QR code, sigil, or hash reference
+
+Once loaded, agents:
+- Parse and verify signature + semantic hash
+- Populate internal symbolic graphs
+- Annotate with truth confidence and perspective overlays
+
+### Internal Graph Synthesis
+
+Glyphs are nodes in an **ontological reasoning graph**, where:
+- `relations` create directed edges
+- `classes` and `truth_mode` define inference boundaries
+- Agents perform symbolic logic over these graphs
+
+Operations include:
+- Deductive chaining
+- Contradiction detection
+- Metaphor synthesis (analogical reasoning)
+
+### Multi-Agent Propagation
+
+Glyphs are shareable over peer channels (e.g., IPFS, YouTube, signed repos).
+
+Agents may:
+- Broadcast glyphs with commentary overlays
+- Fork or mutate glyphs in new namespaces
+- Inherit or reject glyphs based on worldview compatibility or provenance trust
+
+### Mutation & Inheritance
+
+Glyph mutation may be:
+- **Compositional**: two glyphs merged to form a new one
+- **Contextual**: relabeled under a new namespace or overlay
+- **Generative**: created via internal concept synthesis
+
+Agents may develop unique glyph dialects over time—grounded in their experience and cognitive lineage.
+
+
+## 8. Implementation and Toolchain (Rust-first)
+
+We propose an implementation path focused on Rust for low-level control, performance, and security, with WebAssembly and TypeScript layers for UI tooling.
+
+### CLI Toolchain
+
+- `glyph-encode`: JSON → binary `.glyph` (CBOR or MessagePack)
+- `glyph-decode`: binary → JSON view
+- `glyph-sign`: add or verify Ed25519 signature
+- `glyph-validate`: perform structural + semantic linting
+
+### WASM Tools
+
+- `timevector-player`: browser-based glyph overlay for YouTube
+- `glyph-browser`: render and interact with glyphs visually
+- `glyph-explorer`: drag/drop playground for symbolic chaining
+
+### Dataset: Example Glyph Corpus
+
+Begin with 50+ foundational glyphs (e.g., `sun`, `tree`, `birth`, `door`, `moon`, `death`) with:
+
+- Audio files (e.g., soundscapes, phonetics)
+- SVG visuals + sigils
+- Grounding links (Wikidata, sensor examples)
+- Namespaced variants (mythic, empirical, logical)
+
+### Developer Stack
+
+- Rust core (`glyph-core`)
+- TypeScript frontend (WASM/React)
+- Optional: Python bindings for ML training compatibility
+
+
+
+## 9. Evaluation and Benchmarking
+
+Unlike language models which rely on perplexity or BLEU scores, glyph-based systems require **new epistemic benchmarks**.
+
+### Proposed Metrics
+
+| Metric                  | Description                                               |
+|--------------------------|-----------------------------------------------------------|
+| Abstraction depth        | # of reasoning steps before semantic collapse             |
+| Dissonance detection     | Ability to identify contradiction within symbolic graph   |
+| Compression ratio        | Conceptual fidelity per byte (vs. token-based models)     |
+| Grounding score          | Proportion of glyphs with real-world links (e.g., sensors)|
+| Ontological consistency  | % of valid relations without loops or ambiguities         |
+| Transfer synthesis       | % of glyph reuse across agents or contexts                |
+
+### Comparative Testing
+
+Compare glyph-based reasoning vs:
+- LLMs (GPT, Claude) on coherence and contradiction detection
+- Vision-language models (e.g., CLIP) on multimodal inference
+- Symbolic systems (e.g., OWL/RDF) on graph consistency and flexibility
+
+### Human-in-the-loop Evaluation
+
+- Crowdsource glyph interpretation accuracy
+- Use consensus voting on meaning, truth mode, or contradiction detection
+- Enable annotation of glyph misuse or drift
 
