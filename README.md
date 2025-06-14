@@ -14,6 +14,10 @@ Welcome to the Glyph Cognition project! This repository serves as the foundation
 - [000.why.md](000.why.md) — Naming and foundational questions
 - [001.whats-missing.md](001.whats-missing.md) — Limitations of language and gaps
 
+## 📖 Glossary
+
+- [docs/glossary.md](docs/glossary.md) — Canonical term definitions for the glyph system
+
 ## 🌐 Symbolic Infrastructure
 
 - [005.cognitive-propagation.md](005.cognitive-propagation.md)
