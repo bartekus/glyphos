@@ -1,0 +1,63 @@
+{
+  "label": "sun",
+  "aliases": [
+    "star",
+    "solar core"
+  ],
+  "classes": [
+    "astronomy",
+    "energy_source"
+  ],
+  // Perspective & Namespacing
+  "namespace": {
+    "provision": "glyph:core",
+    "contextual_overlays": [
+      {
+        "agent": "glyphos:mythology",
+        "label": "Ra",
+        "truth_mode": "mythic"
+      }
+    ],
+  },
+  "truth_mode": {
+    "type": "empirical",
+    "confidence": 0.98,
+    "verified_by": [
+      "agent:NASA",
+      "agent:ESA"
+    ]
+  },
+  // Audio Block
+  "audio": {
+    "file": "sun.wav",
+    "phonetic": "sʌn"
+  },
+  // stylized QR-like glyph
+  "visual": {
+    "svg": "<svg>...</svg>",
+    "sigil": "base64",
+    "style": {
+      "color": "#FFD700",
+      "stroke": 1.2
+    }
+  },
+  // Relation Block
+  "relations": [
+    {
+      "type": "opposite_of",
+      "target": "glyph:moon"
+    },
+    {
+      "type": "powers",
+      "target": "glyph:photosynthesis"
+    }
+  ],
+  // Grounding Block
+  "grounding": {
+    "wikidata": "Q525",
+    "sensors": [
+      "lidar:12",
+      "img:3421.jpg"
+    ]
+  },
+}
