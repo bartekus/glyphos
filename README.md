@@ -1,8 +1,10 @@
-# glyphos - Glyph Cognition Project
+# glyphos
 
-Language of thought (from glyphē + logos)
+Language of thought (glyphē + logos)
 
-Welcome to the Glyph Cognition project! This repository serves as the foundation for developing a symbolic system based on glyphs, combining cognitive science, epistemology, and computational tools.
+A Glyph Cognition Project
+
+This repository serves as the foundation for developing a symbolic system based on glyphs, combining cognitive science, epistemology, and computational tools.
 
 ## 📦 Glyph Specification
 
