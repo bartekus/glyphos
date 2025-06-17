@@ -30,9 +30,9 @@ combining cognitive science, epistemology, and computational tools.
 - [core/src/glyph_validate.rs](core/src/glyph_validate.rs) — Structural & epistemic checks (WIP)
 
 ## 🧪 Examples
-- [examples/sun.glyph.json](examples/sun.glyph.json5)
-- [examples/birth.glyph.json](examples/birth.glyph.json5)
-- [examples/tree.glyph.json](examples/tree.glyph.json5)
+- [examples/sun.glyph.json5](examples/sun.glyph.json5)
+- [examples/birth.glyph.json5](examples/birth.glyph.json5)
+- [examples/tree.glyph.json5](examples/tree.glyph.json5)
 
 ## 🧠 Whitepaper & Outline
 
