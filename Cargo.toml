@@ -1,0 +1,65 @@
+[package]
+name = "glyphos"
+version = "1.0.0"
+authors = ["Bartek Kus <bartekus@gmail.com>"]
+edition = "2021"
+repository = "https://github.com/bartekus/glyphos"
+readme = "README.md"
+license = "MIT"
+keywords = ["ai", "llm", "learning"]
+description = """
+GlyphOS is a symbolic system based on glyphs, combining cognitive science, epistemology, and computational tools.
+"""
+
+[workspace]
+members = ["utils", "cli", "core"]
+
+[features]
+nightly = ["utils/nightly"]
+termlog = ["utils/termlog"]
+journald = ["utils/journald"]
+syslog = ["utils/syslog"]
+
+[dependencies]
+utils = { path = "utils" }
+cli = { path = "cli" }
+core = { path = "core" }
+human-panic = "2.0.0"
+better-panic = "0.3.0"
+log = "0.4.27"
+
+[dev-dependencies]
+assert_cmd = "2.0.17"
+predicates = "3.1.3"
+
+[profile.dev]
+opt-level = 0
+debug = true
+rpath = false
+lto = false
+debug-assertions = true
+codegen-units = 4
+
+[profile.release]
+opt-level = 3
+debug = false
+rpath = false
+lto = true
+debug-assertions = false
+codegen-units = 1
+
+[profile.test]
+opt-level = 1
+debug = true
+rpath = false
+lto = false
+debug-assertions = true
+codegen-units = 4
+
+[profile.bench]
+opt-level = 3
+debug = false
+rpath = false
+lto = true
+debug-assertions = false
+codegen-units = 1

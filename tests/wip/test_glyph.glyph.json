@@ -1,0 +1,82 @@
+{
+  "header": {
+    "magic": "GLYPH",
+    "version": "0.1",
+    "id": "8a2793a7-894e-4cd6-95d0-cbcfba77fefa",
+    "hash": "blake3:7c8bcef52c35f834e3371f651d71716b8cad221d59c4ee11bb029ef7ea8130a1",
+    "signature": null,
+    "created_at": "2025-06-15T22:42:48.815417Z"
+  },
+  "payload": {
+    "label": "test_glyph",
+    "aliases": [
+      "test",
+      "example_glyph",
+      "demo"
+    ],
+    "classes": [
+      "test_class",
+      "example",
+      "demo"
+    ],
+    "namespace": {
+      "provision": "glyph:test:example",
+      "contextual_overlays": [
+        {
+          "agent": "agent:test",
+          "label": "test_overlay",
+          "truth_mode": "empirical"
+        },
+        {
+          "agent": "agent:validator",
+          "label": "validation_overlay",
+          "truth_mode": "verified"
+        }
+      ]
+    },
+    "origin": {
+      "creator": "test_creator",
+      "timestamp": "2024-01-15T10:30:00Z",
+      "signature": null
+    },
+    "truth_mode": {
+      "type": "empirical",
+      "confidence": 0.95,
+      "verified_by": [
+        "agent:test",
+        "agent:validator"
+      ],
+      "conflicts": []
+    },
+    "audio": {
+      "file": "test_glyph.wav",
+      "phonetic": "test glif"
+    },
+    "visual": {
+      "svg": "<svg>...</svg>",
+      "sigil": "⚡",
+      "style": {
+        "color": "#ff6b6b",
+        "stroke": 2.0
+      }
+    },
+    "relations": [
+      {
+        "type": "similar_to",
+        "target": "glyph:other:example"
+      },
+      {
+        "type": "part_of",
+        "target": "glyph:parent:collection"
+      }
+    ],
+    "grounding": {
+      "wikidata": "Q12345",
+      "sensors": [
+        "camera",
+        "microphone",
+        "accelerometer"
+      ]
+    }
+  }
+}

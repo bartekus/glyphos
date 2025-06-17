@@ -1,0 +1,72 @@
+{
+  // Basic glyph information
+  "label": "test_glyph",
+  "aliases": ["test", "example_glyph", "demo"],
+  "classes": ["test_class", "example", "demo"],
+  
+  // Namespace information
+  "namespace": {
+    "provision": "glyph:test:example",
+    "contextual_overlays": [
+      {
+        "agent": "agent:test",
+        "label": "test_overlay",
+        "truth_mode": "empirical"
+      },
+      {
+        "agent": "agent:validator",
+        "label": "validation_overlay", 
+        "truth_mode": "verified"
+      }
+    ]
+  },
+  
+  // Origin information (optional)
+  "origin": {
+    "creator": "test_creator",
+    "timestamp": "2024-01-15T10:30:00Z",
+    "signature": null
+  },
+  
+  // Truth mode information
+  "truth_mode": {
+    "type": "empirical",
+    "confidence": 0.95,
+    "verified_by": ["agent:test", "agent:validator"],
+    "conflicts": []
+  },
+  
+  // Audio information (optional)
+  "audio": {
+    "file": "test_glyph.wav",
+    "phonetic": "test glif"
+  },
+  
+  // Visual information (optional)
+  "visual": {
+    "svg": "<svg>...</svg>",
+    "sigil": "⚡",
+    "style": {
+      "color": "#ff6b6b",
+      "stroke": 2.0
+    }
+  },
+  
+  // Relations to other glyphs
+  "relations": [
+    {
+      "type": "similar_to",
+      "target": "glyph:other:example"
+    },
+    {
+      "type": "part_of",
+      "target": "glyph:parent:collection"
+    }
+  ],
+  
+  // Grounding information
+  "grounding": {
+    "wikidata": "Q12345",
+    "sensors": ["camera", "microphone", "accelerometer"]
+  }
+} 

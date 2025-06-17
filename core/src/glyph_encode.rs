@@ -10,7 +10,7 @@
 
 use serde::{Deserialize, Serialize};
 use serde_json5;
-use cbor4ii::{self, serde::to_vec, serde::from_slice};
+use ciborium::{into_writer, from_reader};
 use uuid::Uuid;
 use chrono::{DateTime, Utc};
 use blake3::Hasher;
@@ -19,6 +19,10 @@ use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
 use clap::Parser;
+use hex;
+use qrcode::QrCode;
+use image::{Luma, ImageBuffer};
+use base64;
 
 // ============================================================================
 // DATA STRUCTURES
@@ -129,6 +133,14 @@ struct Args {
     #[arg(short, long)]
     output: Option<String>,
     
+    /// Generate QR code from glyph
+    #[arg(long)]
+    qr: bool,
+    
+    /// QR code output file
+    #[arg(long)]
+    qr_output: Option<String>,
+    
     /// Sign the glyph with Ed25519
     #[arg(short, long)]
     sign: bool,
@@ -151,6 +163,54 @@ struct Args {
 // ============================================================================
 
 impl Glyph {
+    pub fn to_qr_code(&self, output_path: Option<&str>) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
+        // Encode glyph to CBOR
+        let cbor_data = self.to_cbor()?;
+        
+        // Convert CBOR to base64 for QR code (more reliable than raw bytes)
+        let base64_data = base64::Engine::encode(&base64::engine::general_purpose::STANDARD, &cbor_data);
+        
+        // Convert to QR code
+        let code = QrCode::new(base64_data.as_bytes())?;
+
+        // Use a simpler approach - render to string first, then convert to image
+        let qr_string = code.render()
+            .light_color(' ')
+            .dark_color('#')
+            .build();
+        
+        // Parse the string representation to create an image
+        let lines: Vec<&str> = qr_string.lines().collect();
+        let height = lines.len() as u32;
+        let width = if height > 0 { lines[0].len() as u32 } else { 0 };
+        
+        // Create image buffer
+        let mut image_buffer = ImageBuffer::new(width, height);
+        
+        // Fill the image based on the string representation
+        for (y, line) in lines.iter().enumerate() {
+            for (x, ch) in line.chars().enumerate() {
+                let pixel = if ch == '#' {
+                    Luma([0u8]) // Black
+                } else {
+                    Luma([255u8]) // White
+                };
+                image_buffer.put_pixel(x as u32, y as u32, pixel);
+            }
+        }
+
+        // Convert to PNG bytes
+        let mut png_data = Vec::new();
+        image_buffer.write_to(&mut std::io::Cursor::new(&mut png_data), image::ImageFormat::Png)?;
+
+        // Save to file if path provided
+        if let Some(path) = output_path {
+            fs::write(path, &png_data)?;
+        }
+
+        Ok(png_data)
+    }
+
     pub fn from_json5(json5_content: &str) -> Result<Self, Box<dyn std::error::Error>> {
         // Parse JSON5 content
         let payload: GlyphPayload = serde_json5::from_str(json5_content)?;
@@ -198,17 +258,26 @@ impl Glyph {
     }
     
     pub fn sign(&mut self, private_key: &[u8]) -> Result<(), Box<dyn std::error::Error>> {
-        let signing_key = SigningKey::from_bytes(private_key)?;
+        // Convert private key to the expected format
+        if private_key.len() != 32 {
+            return Err("Private key must be exactly 32 bytes".into());
+        }
+        
+        let mut key_bytes = [0u8; 32];
+        key_bytes.copy_from_slice(private_key);
+        
+        let signing_key = SigningKey::from_bytes(&key_bytes);
         let message = self.header.hash.as_bytes();
         let signature = signing_key.sign(message);
         
-        self.header.signature = Some(format!("ed25519:{}", signature.to_string()));
+        self.header.signature = Some(format!("ed25519:{}", hex::encode(signature.to_bytes())));
         Ok(())
     }
     
     pub fn to_cbor(&self) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
-        let cbor_data = to_vec(&self)?;
-        Ok(cbor_data)
+        let mut buffer = Vec::new();
+        into_writer(self, &mut buffer)?;
+        Ok(buffer)
     }
     
     pub fn validate(&self) -> Result<(), Vec<String>> {
@@ -293,17 +362,31 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cbor_data = glyph.to_cbor()?;
     
     // Determine output path
-    let output_path = args.output.unwrap_or_else(|| {
-        let input_path = Path::new(&args.input);
+    let output_path = if let Some(output) = args.output {
+        output
+    } else {
+        let input_path = std::path::Path::new(&args.input);
         let stem = input_path.file_stem().unwrap().to_str().unwrap();
         format!("{}.glyph", stem)
-    });
+    };
     
-    // Write output
+    // Write CBOR output
     fs::write(&output_path, cbor_data)?;
     println!("✓ Encoded glyph written to: {}", output_path);
     
-    // Also write JSON companion if requested
+    // Generate QR code if requested
+    if args.qr {
+        let qr_output_path = args.qr_output.unwrap_or_else(|| {
+            let input_path = std::path::Path::new(&args.input);
+            let stem = input_path.file_stem().unwrap().to_str().unwrap();
+            format!("{}.png", stem)
+        });
+        
+        let _qr_data = glyph.to_qr_code(Some(&qr_output_path))?;
+        println!("✓ QR code written to: {}", qr_output_path);
+    }
+    
+    // Also write JSON companion
     let json_companion = format!("{}.json", output_path);
     let json_content = serde_json::to_string_pretty(&glyph)?;
     fs::write(json_companion, json_content)?;

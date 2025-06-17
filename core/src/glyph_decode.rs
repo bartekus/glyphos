@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 use serde_json5;
-use cbor4ii::{self, serde::to_vec, serde::from_slice};
+use ciborium::{into_writer, from_reader};
 use uuid::Uuid;
 use chrono::{DateTime, Utc};
 use blake3::Hasher;
@@ -9,6 +9,10 @@ use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
 use clap::Parser;
+use hex;
+use bardecoder;
+use image::io::Reader as ImageReader;
+use base64;
 
 // ============================================================================
 // DATA STRUCTURES (Shared with glyph-encode.rs)
@@ -157,8 +161,34 @@ struct Args {
 // ============================================================================
 
 impl Glyph {
+    pub fn from_qr_code(qr_data: &[u8]) -> Result<Self, Box<dyn std::error::Error>> {
+        // Load image from bytes
+        let img = ImageReader::new(std::io::Cursor::new(qr_data))
+            .with_guessed_format()?
+            .decode()?;
+        
+        // Create QR decoder
+        let decoder = bardecoder::default_decoder();
+        
+        // Decode QR code
+        let results = decoder.decode(&img);
+        
+        // Find the first successful result
+        let qr_content = results.into_iter()
+            .filter_map(|r| r.ok())
+            .next()
+            .ok_or("No valid QR code found in image")?;
+        
+        // Decode base64 content back to CBOR bytes
+        let cbor_data = base64::Engine::decode(&base64::engine::general_purpose::STANDARD, &qr_content)?;
+        
+        // Decode CBOR to glyph
+        let glyph = Self::from_cbor(&cbor_data)?;
+        Ok(glyph)
+    }
+    
     pub fn from_cbor(cbor_data: &[u8]) -> Result<Self, Box<dyn std::error::Error>> {
-        let glyph: Glyph = from_slice(cbor_data)?;
+        let glyph: Glyph = from_reader(cbor_data)?;
         Ok(glyph)
     }
     
@@ -168,10 +198,22 @@ impl Glyph {
             let signature_hex = signature_str.strip_prefix("ed25519:")
                 .ok_or("Invalid signature format")?;
             let signature_bytes = hex::decode(signature_hex)?;
-            let signature = Signature::from_bytes(&signature_bytes)?;
             
-            // Parse public key
-            let verifying_key = VerifyingKey::from_bytes(public_key)?;
+            // Convert signature bytes to the expected format
+            if signature_bytes.len() != 64 {
+                return Err("Invalid signature length".into());
+            }
+            let mut sig_array = [0u8; 64];
+            sig_array.copy_from_slice(&signature_bytes);
+            let signature = Signature::from_bytes(&sig_array);
+            
+            // Convert public key to the expected format
+            if public_key.len() != 32 {
+                return Err("Invalid public key length".into());
+            }
+            let mut key_array = [0u8; 32];
+            key_array.copy_from_slice(public_key);
+            let verifying_key = VerifyingKey::from_bytes(&key_array)?;
             
             // Verify
             let message = self.header.hash.as_bytes();
@@ -267,8 +309,8 @@ impl Glyph {
         text.push_str(&format!("Truth Mode: {} (confidence: {})\n", 
             self.payload.truth_mode.r#type, self.payload.truth_mode.confidence));
         
-        if !self.payload.verified_by.is_empty() {
-            text.push_str(&format!("Verified by: {}\n", self.payload.verified_by.join(", ")));
+        if !self.payload.truth_mode.verified_by.is_empty() {
+            text.push_str(&format!("Verified by: {}\n", self.payload.truth_mode.verified_by.join(", ")));
         }
         
         if !self.payload.relations.is_empty() {

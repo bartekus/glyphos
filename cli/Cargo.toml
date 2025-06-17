@@ -1,0 +1,19 @@
+[package]
+name = "cli"
+version = "1.0.1"
+authors = ["Bartek Kus <bartekus@gmail.com>"]
+description = "GlyphOS CLI"
+edition = "2021"
+
+[dependencies]
+utils = { path = "../utils" }
+core = { path = "../core" }
+clap_complete = "4.5.50"
+
+[dependencies.clap]
+version = "4.5.37"
+features = ["cargo", "derive"]
+
+[dev-dependencies]
+assert_cmd = "2.0.17"
+predicates = "3.1.3"
